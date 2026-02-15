@@ -1,30 +1,87 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const MyCard = (props) => {
+const MyCard = ({
+    title,
+    description,
+    children,
+    bgcolor = '#c0aaaa',
+    onPress,
+    variant = 'elevated', // 'elevated', 'outlined', 'flat'
+    size = 'medium', // 'small', 'medium', 'large'
+    titleColor,
+    descriptionColor,
+    style,
+}) => {
+    const cardStyles = [
+        styles.baseCard,
+        styles[variant],
+        styles[size],
+        { backgroundColor: bgcolor },
+        style,
+    ]
+
+    const CardWrapper = onPress ? TouchableOpacity : View
+
     return (
-        <View style={{
-            backgroundColor:props.bgcolor,
-            borderRadius: 12,
-            padding: 16,
-            marginVertical: 8,
-            marginHorizontal: 16,
-            shadowColor: '#000',
-            shadowOffset: {
-                width: 0,
-                height: 2,
-            },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
-            elevation: 3,
-        }}>
-            <Text style={styles.title}>{props.children}</Text>
-            <Text style={styles.description}>{props.description}</Text>
-        </View >
+        <CardWrapper
+            style={cardStyles}
+            // onPress={onPress}
+            activeOpacity={onPress ? 0.7 : 1}
+        >
+            {title && (
+                <Text style={[styles.title, titleColor && { color: titleColor }]}>
+                    {title}
+                </Text>
+            )}
+
+            {description && (
+                <Text style={[styles.description, descriptionColor && { color: descriptionColor }]}>
+                    {description}
+                </Text>
+            )}
+
+            {children}
+        </CardWrapper>
     )
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
+    baseCard: {
+        borderRadius: 12,
+        marginVertical: 8,
+        marginHorizontal: 16,
+    },
+
+    // Variants
+    elevated: {
+        backgroundColor: '#FFFFFF',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 4,
+    },
+    outlined: {
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
+        backgroundColor: 'transparent',
+    },
+    flat: {
+        backgroundColor: '#F9FAFB',
+    },
+
+    // Sizes
+    small: {
+        padding: 12,
+    },
+    medium: {
+        padding: 16,
+    },
+    large: {
+        padding: 20,
+    },
+
     title: {
         fontSize: 18,
         fontWeight: '600',
