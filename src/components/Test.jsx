@@ -1,15 +1,19 @@
 import React from 'react';
-import { Text, View } from 'react-native';
-import MyCard from './src/components/MyCard';
+import { Text, View, SafeAreaView } from 'react-native';
+import MyCard from './src/components/MyCard';  
 
-function App() {
+function Test() {
 
   return (
-    <View>
+<View>
       {/* inline style */}
-      <Text style={{ color: 'white', fontSize: 30 }}>Thurunu</Text>
-      {/* <MyCard bgcolor='#4cc53f' description='50000$' title='Salary'> $</MyCard>
-        <MyCard bgcolor='#6b9c30' description='6 year' title='Experience'></MyCard> */}
+      <SafeAreaView>
+        <Text style={{ color: 'white', fontSize: 30 }}>Thurunu</Text>
+      </SafeAreaView>
+
+      {/* props use */}
+      <MyCard bgcolor='#4cc53f' description='50000$' title='Salary'> $</MyCard>
+      <MyCard bgcolor='#6b9c30' description='6 year' title='Experience'></MyCard>
 
 
       <MyCard title="Hello" description="Simple card" />
@@ -35,12 +39,11 @@ function App() {
         bgcolor="#40bc73"
         variant="elevated"
         size="large"
-        onPress={() => navigate('Details')}
+        onPress={() => ('Details')}
         titleColor="#4F46E5"
         style={{ marginHorizontal: 24 }}
       />
-    </View>
-  );
-}
 
-export default App;
+    </View>
+  )}
+export default Test;
