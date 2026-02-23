@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet, Animated, Alert } from 'react-native';
 import { TextInput, Button, Text, Divider } from 'react-native-paper';
+import NavBar from "../../components/NavBar";
 import axios from 'axios';
 
 const SaveStudentScreen = () => {
@@ -19,7 +20,7 @@ const SaveStudentScreen = () => {
             student_contact: contact,
         }, {
             headers: {
-                Authorization: `Bearer 6352|VzVyiKEuf5CVKQG4foOkmwZTnQUXl7cnFeygqoGs7d120f00`, 
+                Authorization: `Bearer 6352|VzVyiKEuf5CVKQG4foOkmwZTnQUXl7cnFeygqoGs7d120f00`,
             }
         }
         )
@@ -51,62 +52,67 @@ const SaveStudentScreen = () => {
     ).start();
 
     return (
-        <View style={styles.container}>
-            <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
-            <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
+        <View>
+            <NavBar />
 
-            <View style={styles.formWrapper}>
-                <Animated.View style={[styles.circle3, { opacity: fadeAnim2 }]} />
-                <Animated.View style={[styles.circle4, { opacity: fadeAnim2 }]} />
+            <View style={styles.container}>
 
-                <Text variant="headlineSmall" style={styles.title}>Save Student</Text>
-                <Divider style={styles.divider} />
+                <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
+                <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
 
-                <TextInput
-                    label="Student Name"
-                    mode="outlined"
-                    style={styles.input}
-                    theme={{ colors: { primary: '#6200ee' } }}
-                    left={<TextInput.Icon icon="account" />}
-                    onChangeText={setName}
-                />
+                <View style={styles.formWrapper}>
+                    <Animated.View style={[styles.circle3, { opacity: fadeAnim2 }]} />
+                    <Animated.View style={[styles.circle4, { opacity: fadeAnim2 }]} />
 
-                <TextInput
-                    label="Student Age"
-                    mode="outlined"
-                    style={styles.input}
-                    theme={{ colors: { primary: '#6200ee' } }}
-                    left={<TextInput.Icon icon="card-account-details" />}
-                    onChangeText={setAge}
-                />
+                    <Text variant="headlineSmall" style={styles.title}>Save Student</Text>
+                    <Divider style={styles.divider} />
 
-                <TextInput
-                    label="Address"
-                    mode="outlined"
-                    style={styles.input}
-                    theme={{ colors: { primary: '#6200ee' } }}
-                    left={<TextInput.Icon icon="email" />}
-                    onChangeText={setAddress}
-                />
+                    <TextInput
+                        label="Student Name"
+                        mode="outlined"
+                        style={styles.input}
+                        theme={{ colors: { primary: '#6200ee' } }}
+                        left={<TextInput.Icon icon="account" />}
+                        onChangeText={setName}
+                    />
 
-                <TextInput
-                    label="Contact"
-                    mode="outlined"
-                    style={styles.input}
-                    theme={{ colors: { primary: '#6200ee' } }}
-                    left={<TextInput.Icon icon="book-open-variant" />}
-                    onChangeText={setContact}
-                />
+                    <TextInput
+                        label="Student Age"
+                        mode="outlined"
+                        style={styles.input}
+                        theme={{ colors: { primary: '#6200ee' } }}
+                        left={<TextInput.Icon icon="cake-variant" />}
+                        onChangeText={setAge}
+                    />
 
-                <Button
-                    mode="contained"
-                    style={styles.button}
-                    contentStyle={styles.buttonContent}
-                    icon="content-save"
-                    onPress={handleSave}
-                >
-                    Save Student
-                </Button>
+                    <TextInput
+                        label="Address"
+                        mode="outlined"
+                        style={styles.input}
+                        theme={{ colors: { primary: '#6200ee' } }}
+                        left={<TextInput.Icon icon="home-map-marker" />}
+                        onChangeText={setAddress}
+                    />
+
+                    <TextInput
+                        label="Contact"
+                        mode="outlined"
+                        style={styles.input}
+                        theme={{ colors: { primary: '#6200ee' } }}
+                        left={<TextInput.Icon icon="phone" />}
+                        onChangeText={setContact}
+                    />
+
+                    <Button
+                        mode="contained"
+                        style={styles.button}
+                        contentStyle={styles.buttonContent}
+                        icon="content-save"
+                        onPress={handleSave}
+                    >
+                        Save Student
+                    </Button>
+                </View>
             </View>
         </View>
     );
@@ -158,6 +164,7 @@ const styles = StyleSheet.create({
     },
     formWrapper: {
         width: '100%',
+        marginTop: -200,
         maxWidth: 400,
         backgroundColor: '#ffffff',
         padding: 24,

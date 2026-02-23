@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useNavigation } from '@react-navigation/native';
 
 const NAV_ITEMS = [
     { label: 'Register', icon: 'account-plus' },
@@ -11,38 +12,49 @@ const NAV_ITEMS = [
     { label: 'Update',   icon: 'account-edit-outline' },
     { label: 'Delete',   icon: 'account-remove-outline' },
 ];
+const ROUTES = {
+  Register: 'register',
+  Login: 'login',
+  Save: 'save',
+  All: 'getall',
+  Update: 'update',
+  Delete: 'delete',
+};
 
-const NavBar = ({ active, onPress }) => {
-    return (
-        <View style={styles.navBar}>
-            {NAV_ITEMS.map((item) => {
-                const isActive = active === item.label;
-                return (
-                    <TouchableOpacity
-                        key={item.label}
-                        style={styles.navItem}
-                        onPress={() => onPress && onPress(item.label)}
-                        activeOpacity={0.7}
-                    >
-                        <View style={[styles.iconBox, isActive && styles.iconBoxActive]}>
-                            <MaterialCommunityIcons
-                                name={item.icon}
-                                size={22}
-                                color={isActive ? '#ffffff' : '#aaa'}
-                            />
-                        </View>
-                        <Text style={[styles.navLabel, isActive && styles.navLabelActive]}>
-                            {item.label}
-                        </Text>
-                    </TouchableOpacity>
-                );
-            })}
-        </View>
-    );
+const NavBar = ({ active }) => {
+  const navigation = useNavigation();
+
+  return (
+    <View style={styles.navBar}>
+      {NAV_ITEMS.map((item) => {
+        const isActive = active === item.label;
+
+        return (
+          <TouchableOpacity
+            key={item.label}
+            style={styles.navItem}
+            onPress={() => navigation.navigate(ROUTES[item.label])}
+            activeOpacity={0.7}
+          >
+            <View style={[styles.iconBox, isActive && styles.iconBoxActive]}>
+              <MaterialCommunityIcons
+                name={item.icon}
+                size={22}
+                color={isActive ? '#ffffff' : '#aaa'}
+              />
+            </View>
+            <Text style={[styles.navLabel, isActive && styles.navLabelActive]}>
+              {item.label}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    navBar: {
+    navBar: { 
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',

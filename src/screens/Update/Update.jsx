@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, StyleSheet, Animated, Alert } from 'react-native';
 import { TextInput, Button, Text, Divider } from 'react-native-paper';
 import axios from 'axios';
+import NavBar from '../../components/NavBar'
 
 const UpdateStudentScreen = () => {
 
@@ -52,75 +53,79 @@ const UpdateStudentScreen = () => {
     ).start();
 
     return (
-        <View style={styles.container}>
-            <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
-            <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
+        <View>
+            <NavBar />
+            <View style={styles.container}>
+                <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
+                <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
 
-            <View style={styles.formWrapper}>
-                <Animated.View style={[styles.circle3, { opacity: fadeAnim2 }]} />
-                <Animated.View style={[styles.circle4, { opacity: fadeAnim2 }]} />
+                <View style={styles.formWrapper}>
+                    <Animated.View style={[styles.circle3, { opacity: fadeAnim2 }]} />
+                    <Animated.View style={[styles.circle4, { opacity: fadeAnim2 }]} />
 
-                <Text variant="headlineSmall" style={styles.title}>Update Student</Text>
-                <Divider style={styles.divider} />
+                    <Text variant="headlineSmall" style={styles.title}>Update Student</Text>
+                    <Divider style={styles.divider} />
 
-                <TextInput
-                    label="Student ID"
-                    mode="outlined"
-                    keyboardType="numeric"
-                    style={styles.input}
-                    theme={{ colors: { primary: '#6200ee' } }}
-                    left={<TextInput.Icon icon="id" />}
-                    onChangeText={setId}
-                />
+                    <TextInput
+                        label="Student ID"
+                        mode="outlined"
+                        keyboardType="numeric"
+                        style={styles.input}
+                        theme={{ colors: { primary: '#6200ee' } }}
+                        left={<TextInput.Icon icon="card-account-details" />}
+                        onChangeText={setId}
+                    />
 
-                <TextInput
-                    label="Student Name"
-                    mode="outlined" 
-                    style={styles.input}
-                    theme={{ colors: { primary: '#6200ee' } }}
-                    left={<TextInput.Icon icon="account" />}
-                    onChangeText={setName}
-                />
+                    <TextInput
+                        label="Student Name"
+                        mode="outlined"
+                        style={styles.input}
+                        theme={{ colors: { primary: '#6200ee' } }}
+                        left={<TextInput.Icon icon="account" />}
+                        onChangeText={setName}
+                    />
 
-                <TextInput
-                    label="Student Age"
-                    mode="outlined"
-                    keyboardType="numeric"
-                    style={styles.input}
-                    theme={{ colors: { primary: '#6200ee' } }}
-                    left={<TextInput.Icon icon="age" />}
-                    onChangeText={setAge}
-                />
+                    <TextInput
+                        label="Student Age"
+                        mode="outlined"
+                        keyboardType="numeric"
+                        style={styles.input}
+                        theme={{ colors: { primary: '#6200ee' } }}
+                        left={<TextInput.Icon icon="cake-variant" />}
+                        onChangeText={setAge}
+                    />
 
-                <TextInput
-                    label="Address"
-                    mode="outlined"
-                    style={styles.input}
-                    theme={{ colors: { primary: '#6200ee' } }}
-                    left={<TextInput.Icon icon="address" />}
-                    onChangeText={setAddress}
-                />
+                    <TextInput
+                        label="Address"
+                        mode="outlined"
+                        style={styles.input}
+                        theme={{ colors: { primary: '#6200ee' } }}
+                        left={<TextInput.Icon icon="home-map-marker" />}
+                        onChangeText={setAddress}
+                    />
 
-                <TextInput
-                    label="Contact"
-                    mode="outlined"
-                    keyboardType="numeric"
-                    style={styles.input}
-                    theme={{ colors: { primary: '#6200ee' } }}
-                    left={<TextInput.Icon icon="contact" />}
-                    onChangeText={setContact}
-                />
+                    <TextInput
+                        label="Contact"
+                        mode="outlined"
+                        keyboardType="numeric"
+                        style={styles.input}
+                        theme={{ colors: { primary: '#6200ee' } }}
+                        left={<TextInput.Icon icon="phone" />}
+                        onChangeText={setContact}
+                    />
 
-                <Button
-                    mode="contained"
-                    style={styles.button}
-                    contentStyle={styles.buttonContent}
-                    icon="pencil"
-                    onPress={handleUpdate}
-                >
-                    Update Student
-                </Button>
+                    <Button
+                        mode="contained"
+                        style={styles.button}
+                        contentStyle={styles.buttonContent}
+                        icon="pencil"
+                        onPress={handleUpdate}
+                    >
+                        Update Student
+                    </Button>
+                </View>
             </View>
+
         </View>
     );
 };
@@ -171,6 +176,7 @@ const styles = StyleSheet.create({
     },
     formWrapper: {
         width: '100%',
+        marginTop: -200,
         maxWidth: 400,
         backgroundColor: '#ffffff',
         padding: 24,

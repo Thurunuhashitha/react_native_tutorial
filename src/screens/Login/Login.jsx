@@ -2,8 +2,12 @@ import * as React from 'react';
 import { View, StyleSheet, Animated, Alert } from 'react-native';
 import { TextInput, Button, Text, Divider } from 'react-native-paper';
 import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
+import NavBar from '../../components/NavBar';
 
 const MyComponent = () => {
+    //navigation
+    const navigation = useNavigation();
 
     //post Login funcrion
     const [email, setEmail] = React.useState('');
@@ -49,6 +53,7 @@ const MyComponent = () => {
 
     return (
         <View style={styles.container}>
+            <NavBar/>
             <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
             <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
 
@@ -65,6 +70,7 @@ const MyComponent = () => {
                     keyboardType="email-address"
                     autoCapitalize="none"
                     style={styles.input}
+                    left={<TextInput.Icon icon="email" />}
                     theme={{ colors: { primary: '#6200ee' } }}
                     onChangeText={setEmail}
                 />
@@ -74,6 +80,7 @@ const MyComponent = () => {
                     secureTextEntry={!show}
                     mode="outlined"
                     style={styles.input}
+                    left={<TextInput.Icon icon="lock" />}
                     theme={{ colors: { primary: '#6200ee' } }}
                     right={
                         <TextInput.Icon
@@ -91,6 +98,14 @@ const MyComponent = () => {
                     onPress={handleLogin}
                 >
                     Login
+                </Button>
+                <Button
+                    mode="contained"
+                    style={styles.button}
+                    contentStyle={styles.buttonContent}
+                    onPress={() => navigation.navigate('register')}
+                >
+                    Register
                 </Button>
             </View>
             {token ? (

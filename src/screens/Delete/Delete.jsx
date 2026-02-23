@@ -1,12 +1,13 @@
 import * as React from 'react';
-import { View, StyleSheet, Animated ,Alert} from 'react-native';
+import { View, StyleSheet, Animated, Alert } from 'react-native';
 import { TextInput, Button, Text, Divider, IconButton } from 'react-native-paper';
 import axios from 'axios';
+import NavBar from '../../components/NavBar'
 
 const DeleteStudentScreen = () => {
 
     //Delete function
-    const[id,setId]=React.useState ('');
+    const [id, setId] = React.useState('');
 
     const handleDelete = () => {
         axios.delete(`https://student-api.acpt.lk/api/student/delete/${id}`, {
@@ -15,7 +16,7 @@ const DeleteStudentScreen = () => {
             }
         })
             .then(response => {
-                console.log('Success:', response.data); 
+                console.log('Success:', response.data);
                 Alert.alert('Delete Success!', ' You Have Successfully Delete Student')
             })
             .catch(error => {
@@ -42,45 +43,49 @@ const DeleteStudentScreen = () => {
     ).start();
 
     return (
-        <View style={styles.container}>
-            <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
-            <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
+        <View>
+            <NavBar />
+            <View style={styles.container}>
+                <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
+                <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
 
-            <View style={styles.formWrapper}>
-                <Animated.View style={[styles.circle3, { opacity: fadeAnim2 }]} />
-                <Animated.View style={[styles.circle4, { opacity: fadeAnim2 }]} />
+                <View style={styles.formWrapper}>
+                    <Animated.View style={[styles.circle3, { opacity: fadeAnim2 }]} />
+                    <Animated.View style={[styles.circle4, { opacity: fadeAnim2 }]} />
 
-                <Text variant="headlineSmall" style={styles.title}>Delete Student</Text>
-                <Divider style={styles.divider} />
+                    <Text variant="headlineSmall" style={styles.title}>Delete Student</Text>
+                    <Divider style={styles.divider} />
 
-                <View style={styles.warningBox}>
-                    <IconButton icon="alert-circle" iconColor="#b00020" size={20} style={{ margin: 0 }} />
-                    <Text style={styles.warningText}>
-                        This action is permanent and cannot be undone.
-                    </Text>
+                    <View style={styles.warningBox}>
+                        <IconButton icon="alert-circle" iconColor="#b00020" size={20} style={{ margin: 0 }} />
+                        <Text style={styles.warningText}>
+                            This action is permanent and cannot be undone.
+                        </Text>
+                    </View>
+
+                    <TextInput
+                        label="Student ID"
+                        mode="outlined"
+                        keyboardType="numeric"
+                        style={styles.input}
+                        theme={{ colors: { primary: '#b00020' } }}
+                        left={<TextInput.Icon icon="card-account-details" />}
+                        onChangeText={setId}
+                    />
+
+                    <Button
+                        mode="contained"
+                        style={styles.button}
+                        contentStyle={styles.buttonContent}
+                        icon="delete"
+                        buttonColor="#b00020"
+                        onPress={handleDelete}
+                    >
+                        Delete Student
+                    </Button>
                 </View>
-
-                <TextInput
-                    label="Student ID"
-                    mode="outlined"
-                    keyboardType="numeric"
-                    style={styles.input}
-                    theme={{ colors: { primary: '#b00020' } }}
-                    left={<TextInput.Icon icon="card-account-details" />}
-                    onChangeText={setId}
-                />
-
-                <Button
-                    mode="contained"
-                    style={styles.button}
-                    contentStyle={styles.buttonContent}
-                    icon="delete"
-                    buttonColor="#b00020"
-                    onPress={handleDelete}
-                >
-                    Delete Student
-                </Button>
             </View>
+
         </View>
     );
 };
@@ -131,6 +136,7 @@ const styles = StyleSheet.create({
     },
     formWrapper: {
         width: '100%',
+        marginTop: -220,
         maxWidth: 400,
         backgroundColor: '#ffffff',
         padding: 24,
@@ -147,7 +153,7 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         color: '#b00020',
         marginBottom: 8,
-        textAlign:'center',
+        textAlign: 'center',
     },
     divider: {
         marginBottom: 20,

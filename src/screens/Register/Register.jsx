@@ -3,8 +3,11 @@ import { View, StyleSheet, Animated,Alert } from 'react-native';
 import { TextInput, Button, Text, Divider } from 'react-native-paper';
 import axios from 'axios';
 import NavBar from '../../components/NavBar'
+import { useNavigation } from '@react-navigation/native';
 
 const MyComponent = () => { 
+    //navigation
+    const navigation = useNavigation();
     
     // Post register function
     const [name,setName] = React.useState('');
@@ -20,6 +23,7 @@ const MyComponent = () => {
             .then(response => {
                 console.log('Success:', response.data);
                 Alert.alert('Register Success', ' You Have Successfully Rgisterd');
+                navigation.navigate('login');
                 
             })
             .catch(error => {
@@ -67,7 +71,6 @@ const MyComponent = () => {
 
     return (
         <View style={styles.container}>
-            <NavBar/>
             <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
             <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
 
@@ -82,6 +85,7 @@ const MyComponent = () => {
                     label="Name"
                     mode="outlined" 
                     style={styles.input}
+                    left={<TextInput.Icon icon="account" />}
                     theme={{ colors: { primary: '#6200ee' } }}
                     onChangeText={setName}
                 />
@@ -92,6 +96,7 @@ const MyComponent = () => {
                     keyboardType="email-address" 
                     autoCapitalize="none"
                     style={styles.input}
+                    left={<TextInput.Icon icon="email" />}
                     theme={{ colors: { primary: '#6200ee' } }}
                     onChangeText={setEmail}
                 />
@@ -101,9 +106,10 @@ const MyComponent = () => {
                     secureTextEntry={!show}
                     mode="outlined" 
                     style={styles.input}
+                    left={<TextInput.Icon icon="lock" />}
                     theme={{ colors: { primary: '#6200ee' } }}
                     right={
-                        <TextInput.Icon
+                        <TextInput.Icon 
                             icon={show ? "eye-off" : "eye"}
                             onPress={() => setShow(!show)}
                         />
@@ -118,6 +124,14 @@ const MyComponent = () => {
                     onPress={handleRegister}
                 >
                     Register
+                </Button>
+                <Button
+                    mode="contained"
+                    style={styles.button}
+                    contentStyle={styles.buttonContent} 
+                    onPress={() => navigation.navigate('login')}
+                >
+                    Login
                 </Button>
             </View>
         </View>

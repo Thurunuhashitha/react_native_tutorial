@@ -49,7 +49,7 @@ const GetAllStudentsScreen = () => {
             </View>
             <View style={styles.studentInfo}>
                 <Text style={styles.studentName}>{item.student_name}</Text>
-                <Text style={styles.studentSub}>Age: {item.student_age}  •  ID: {item.id}</Text>
+                <Text style={styles.studentSub}>Age: {item.student_age}  ----  ID: {item.id}</Text>
                 <Text style={styles.studentSub}>📍 {item.student_address}</Text>
                 <Text style={styles.studentEmail}>📞 {item.student_contact}</Text>
             </View>
@@ -57,41 +57,45 @@ const GetAllStudentsScreen = () => {
     );
 
     return (
-        <View style={styles.container}>
+        <View>
             <NavBar />
-            <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
-            <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
 
-            <View style={styles.formWrapper}>
-                <Animated.View style={[styles.circle3, { opacity: fadeAnim2 }]} />
-                <Animated.View style={[styles.circle4, { opacity: fadeAnim2 }]} />
+            <View style={styles.container}>
 
-                <Text variant="headlineSmall" style={styles.title}>All Students</Text>
-                <Divider style={styles.divider} />
+                <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
+                <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
 
-                <Button
-                    mode="contained"
-                    style={styles.button}
-                    contentStyle={styles.buttonContent}
-                    icon="account-group"
-                    onPress={handleGetall}
-                >
-                    Get All Students
-                </Button>
-            </View>
+                <View style={styles.formWrapper}>
+                    <Animated.View style={[styles.circle3, { opacity: fadeAnim2 }]} />
+                    <Animated.View style={[styles.circle4, { opacity: fadeAnim2 }]} />
 
-            {students.length > 0 && (
-                <View style={styles.listContainer}>
-                    <Text style={styles.countLabel}>{students.length} students found</Text>
-                    <FlatList
-                        data={students}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={renderStudent}
-                        showsVerticalScrollIndicator={false}
-                        ItemSeparatorComponent={() => <Divider style={{ marginVertical: 4 }} />}
-                    />
+                    <Text variant="headlineSmall" style={styles.title}>All Students</Text>
+                    <Divider style={styles.divider} />
+
+                    <Button
+                        mode="contained"
+                        style={styles.button}
+                        contentStyle={styles.buttonContent}
+                        icon="account-group"
+                        onPress={handleGetall}
+                    >
+                        Get All Students
+                    </Button>
                 </View>
-            )}
+
+                {students.length > 0 && (
+                    <View style={styles.listContainer}>
+                        <Text style={styles.countLabel}>{students.length} students found</Text>
+                        <FlatList
+                            data={students}
+                            keyExtractor={(item) => item.id.toString()}
+                            renderItem={renderStudent}
+                            showsVerticalScrollIndicator={false}
+                            ItemSeparatorComponent={() => <Divider style={{ marginVertical: 4 }} />}
+                        />
+                    </View>
+                )}
+            </View>
         </View>
     );
 };
