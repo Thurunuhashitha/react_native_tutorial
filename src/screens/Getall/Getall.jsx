@@ -1,28 +1,39 @@
 import * as React from 'react';
 import { View, StyleSheet, Animated, Alert, FlatList } from 'react-native';
 import { Button, Text, Divider } from 'react-native-paper';
-import NavBar from '../../components/NavBar'
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const GetAllStudentsScreen = () => {
+
+    //navigation
+    const navigation = useNavigation();
 
     //Get all Function 
     const [students, setStudents] = React.useState([]);
 
-    const handleGetall = () => {
-        axios.get('https://student-api.acpt.lk/api/student/getAll', {
-            headers: {
-                Authorization: `Bearer 6352|VzVyiKEuf5CVKQG4foOkmwZTnQUXl7cnFeygqoGs7d120f00`,
+    const handleGetall = async () => {
+        try {
+            const token = await AsyncStorage.getItem('authToken'); // get token from storage
+            if (!token) {
+                Alert.alert('Error', 'No token found. Please login first.');
+                return;
             }
-        })
-            .then(response => {
-                console.log('Success:', response.data);
-                setStudents(response.data);
-            })
-            .catch(error => {
-                console.log('Error:', error.response?.data || error.message);
-                Alert.alert('Getall Error', 'Please Try Again')
-            });
+
+            const response = await axios.get(
+                'https://student-api.acpt.lk/api/student/getAll',
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+
+            console.log('Success:', response.data);
+            setStudents(response.data);
+        } catch (error) {
+            console.log('Error:', error.response?.data || error.message);
+            Alert.alert('Getall Error', 'Please Try Again');
+        }
     };
 
     //animation
@@ -57,45 +68,49 @@ const GetAllStudentsScreen = () => {
     );
 
     return (
-        <View>
-            <NavBar />
+        <View style={styles.container}>
 
-            <View style={styles.container}>
+            <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
+            <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
 
-                <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
-                <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
+            <View style={styles.formWrapper}>
+                <Animated.View style={[styles.circle3, { opacity: fadeAnim2 }]} />
+                <Animated.View style={[styles.circle4, { opacity: fadeAnim2 }]} />
 
-                <View style={styles.formWrapper}>
-                    <Animated.View style={[styles.circle3, { opacity: fadeAnim2 }]} />
-                    <Animated.View style={[styles.circle4, { opacity: fadeAnim2 }]} />
+                <Text variant="headlineSmall" style={styles.title}>All Students</Text>
+                <Divider style={styles.divider} />
 
-                    <Text variant="headlineSmall" style={styles.title}>All Students</Text>
-                    <Divider style={styles.divider} />
-
-                    <Button
-                        mode="contained"
-                        style={styles.button}
-                        contentStyle={styles.buttonContent}
-                        icon="account-group"
-                        onPress={handleGetall}
-                    >
-                        Get All Students
-                    </Button>
-                </View>
-
-                {students.length > 0 && (
-                    <View style={styles.listContainer}>
-                        <Text style={styles.countLabel}>{students.length} students found</Text>
-                        <FlatList
-                            data={students}
-                            keyExtractor={(item) => item.id.toString()}
-                            renderItem={renderStudent}
-                            showsVerticalScrollIndicator={false}
-                            ItemSeparatorComponent={() => <Divider style={{ marginVertical: 4 }} />}
-                        />
-                    </View>
-                )}
+                <Button
+                    mode="contained"
+                    style={styles.button}
+                    contentStyle={styles.buttonContent}
+                    icon="account-group"
+                    onPress={handleGetall}
+                >
+                    Get All Students
+                </Button>
+                <Button
+                    mode="contained"
+                    style={styles.button}
+                    contentStyle={styles.buttonContent}
+                    onPress={() => navigation.navigate('delete')}
+                >
+                    Delete Student
+                </Button>
             </View>
+
+            {students.length > 0 && (
+                <View style={styles.listContainer}>
+                    <Text style={styles.countLabel}>{students.length} students found</Text>
+                    <FlatList
+                        data={students}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={renderStudent}
+                        showsVerticalScrollIndicator={false}
+                        ItemSeparatorComponent={() => <Divider style={{ marginVertical: 4 }} />}
+                    />
+                </View>
+            )}
         </View>
     );
 };

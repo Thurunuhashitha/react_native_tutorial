@@ -2,9 +2,13 @@ import * as React from 'react';
 import { View, StyleSheet, Animated, Alert } from 'react-native';
 import { TextInput, Button, Text, Divider } from 'react-native-paper';
 import axios from 'axios';
-import NavBar from '../../components/NavBar'
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const UpdateStudentScreen = () => {
+
+    //navigation
+    const navigation = useNavigation();
 
     //put function
     const [id, setId] = React.useState('');
@@ -13,26 +17,33 @@ const UpdateStudentScreen = () => {
     const [address, setAddress] = React.useState('');
     const [contact, setContact] = React.useState('');
 
-    const handleUpdate = () => {
-        axios.put(`https://student-api.acpt.lk/api/student/update/${id}`, {
-            student_name: name,
-            student_age: age,
-            student_address: address,
-            student_contact: contact,
-        },
-            {
-                headers: {
-                    Authorization: `Bearer 6352|VzVyiKEuf5CVKQG4foOkmwZTnQUXl7cnFeygqoGs7d120f00`,
+    const handleUpdate = async () => {
+        try {
+            const token = await AsyncStorage.getItem('authToken'); // get saved token
+            if (!token) {
+                Alert.alert('Error', 'No token found. Please login first.');
+                return;
+            }
+
+            const response = await axios.put(
+                `https://student-api.acpt.lk/api/student/update/${id}`,
+                {
+                    student_name: name,
+                    student_age: age,
+                    student_address: address,
+                    student_contact: contact,
                 },
-            })
-            .then(response => {
-                console.log('Success:', response.data);
-                Alert.alert('Update Success!', ' You Have Successfully Update Student')
-            })
-            .catch(error => {
-                console.log('Error:', error.response?.data || error.message);
-                Alert.alert('Update Error', 'Please Try Again')
-            });
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+
+            console.log('Success:', response.data);
+            Alert.alert('Update Success!', 'You Have Successfully Updated Student');
+        } catch (error) {
+            console.log('Error:', error.response?.data || error.message);
+            Alert.alert('Update Error', 'Please Try Again');
+        }
     };
 
     //animation
@@ -53,80 +64,77 @@ const UpdateStudentScreen = () => {
     ).start();
 
     return (
-        <View>
-            <NavBar />
-            <View style={styles.container}>
-                <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
-                <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
+        <View style={styles.container}>
+            <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
+            <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
 
-                <View style={styles.formWrapper}>
-                    <Animated.View style={[styles.circle3, { opacity: fadeAnim2 }]} />
-                    <Animated.View style={[styles.circle4, { opacity: fadeAnim2 }]} />
+            <View style={styles.formWrapper}>
+                <Animated.View style={[styles.circle3, { opacity: fadeAnim2 }]} />
+                <Animated.View style={[styles.circle4, { opacity: fadeAnim2 }]} />
 
-                    <Text variant="headlineSmall" style={styles.title}>Update Student</Text>
-                    <Divider style={styles.divider} />
+                <Text variant="headlineSmall" style={styles.title}>Update Student</Text>
+                <Divider style={styles.divider} />
 
-                    <TextInput
-                        label="Student ID"
-                        mode="outlined"
-                        keyboardType="numeric"
-                        style={styles.input}
-                        theme={{ colors: { primary: '#6200ee' } }}
-                        left={<TextInput.Icon icon="card-account-details" />}
-                        onChangeText={setId}
-                    />
+                <TextInput
+                    label="Student ID"
+                    mode="outlined"
+                    keyboardType="numeric"
+                    style={styles.input}
+                    theme={{ colors: { primary: '#6200ee' } }}
+                    left={<TextInput.Icon icon="card-account-details" />}
+                    onChangeText={setId}
+                />
 
-                    <TextInput
-                        label="Student Name"
-                        mode="outlined"
-                        style={styles.input}
-                        theme={{ colors: { primary: '#6200ee' } }}
-                        left={<TextInput.Icon icon="account" />}
-                        onChangeText={setName}
-                    />
+                <TextInput
+                    label="Student Name"
+                    mode="outlined"
+                    style={styles.input}
+                    theme={{ colors: { primary: '#6200ee' } }}
+                    left={<TextInput.Icon icon="account" />}
+                    onChangeText={setName}
+                />
 
-                    <TextInput
-                        label="Student Age"
-                        mode="outlined"
-                        keyboardType="numeric"
-                        style={styles.input}
-                        theme={{ colors: { primary: '#6200ee' } }}
-                        left={<TextInput.Icon icon="cake-variant" />}
-                        onChangeText={setAge}
-                    />
+                <TextInput
+                    label="Student Age"
+                    mode="outlined"
+                    keyboardType="numeric"
+                    style={styles.input}
+                    theme={{ colors: { primary: '#6200ee' } }}
+                    left={<TextInput.Icon icon="cake-variant" />}
+                    onChangeText={setAge}
+                />
 
-                    <TextInput
-                        label="Address"
-                        mode="outlined"
-                        style={styles.input}
-                        theme={{ colors: { primary: '#6200ee' } }}
-                        left={<TextInput.Icon icon="home-map-marker" />}
-                        onChangeText={setAddress}
-                    />
+                <TextInput
+                    label="Address"
+                    mode="outlined"
+                    style={styles.input}
+                    theme={{ colors: { primary: '#6200ee' } }}
+                    left={<TextInput.Icon icon="home-map-marker" />}
+                    onChangeText={setAddress}
+                />
 
-                    <TextInput
-                        label="Contact"
-                        mode="outlined"
-                        keyboardType="numeric"
-                        style={styles.input}
-                        theme={{ colors: { primary: '#6200ee' } }}
-                        left={<TextInput.Icon icon="phone" />}
-                        onChangeText={setContact}
-                    />
+                <TextInput
+                    label="Contact"
+                    mode="outlined"
+                    keyboardType="numeric"
+                    style={styles.input}
+                    theme={{ colors: { primary: '#6200ee' } }}
+                    left={<TextInput.Icon icon="phone" />}
+                    onChangeText={setContact}
+                />
 
-                    <Button
-                        mode="contained"
-                        style={styles.button}
-                        contentStyle={styles.buttonContent}
-                        icon="pencil"
-                        onPress={handleUpdate}
-                    >
-                        Update Student
-                    </Button>
-                </View>
+                <Button
+                    mode="contained"
+                    style={styles.button}
+                    contentStyle={styles.buttonContent}
+                    icon="pencil"
+                    onPress={handleUpdate}
+                >
+                    Update Student
+                </Button>
             </View>
-
         </View>
+
     );
 };
 

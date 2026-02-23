@@ -2,27 +2,38 @@ import * as React from 'react';
 import { View, StyleSheet, Animated, Alert } from 'react-native';
 import { TextInput, Button, Text, Divider, IconButton } from 'react-native-paper';
 import axios from 'axios';
-import NavBar from '../../components/NavBar'
+import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DeleteStudentScreen = () => {
+
+    //navigation
+    const navigation = useNavigation();
 
     //Delete function
     const [id, setId] = React.useState('');
 
-    const handleDelete = () => {
-        axios.delete(`https://student-api.acpt.lk/api/student/delete/${id}`, {
-            headers: {
-                Authorization: `Bearer 6352|VzVyiKEuf5CVKQG4foOkmwZTnQUXl7cnFeygqoGs7d120f00`,
+    const handleDelete = async () => {
+        try {
+            const token = await AsyncStorage.getItem('authToken'); // get the saved token
+            if (!token) {
+                Alert.alert('Error', 'No token found. Please login first.');
+                return;
             }
-        })
-            .then(response => {
-                console.log('Success:', response.data);
-                Alert.alert('Delete Success!', ' You Have Successfully Delete Student')
-            })
-            .catch(error => {
-                console.log('Error:', error.response?.data || error.message);
-                Alert.alert('Delete Error', 'Please Try Again')
-            });
+
+            const response = await axios.delete(
+                `https://student-api.acpt.lk/api/student/delete/${id}`,
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+
+            console.log('Success:', response.data);
+            Alert.alert('Delete Success!', 'You Have Successfully Deleted Student');
+        } catch (error) {
+            console.log('Error:', error.response?.data || error.message);
+            Alert.alert('Delete Error', 'Please Try Again');
+        }
     };
 
     //animation
@@ -43,49 +54,53 @@ const DeleteStudentScreen = () => {
     ).start();
 
     return (
-        <View>
-            <NavBar />
-            <View style={styles.container}>
-                <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
-                <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
+        <View style={styles.container}>
+            <Animated.View style={[styles.circle1, { opacity: fadeAnim1 }]} />
+            <Animated.View style={[styles.circle2, { opacity: fadeAnim1 }]} />
 
-                <View style={styles.formWrapper}>
-                    <Animated.View style={[styles.circle3, { opacity: fadeAnim2 }]} />
-                    <Animated.View style={[styles.circle4, { opacity: fadeAnim2 }]} />
+            <View style={styles.formWrapper}>
+                <Animated.View style={[styles.circle3, { opacity: fadeAnim2 }]} />
+                <Animated.View style={[styles.circle4, { opacity: fadeAnim2 }]} />
 
-                    <Text variant="headlineSmall" style={styles.title}>Delete Student</Text>
-                    <Divider style={styles.divider} />
+                <Text variant="headlineSmall" style={styles.title}>Delete Student</Text>
+                <Divider style={styles.divider} />
 
-                    <View style={styles.warningBox}>
-                        <IconButton icon="alert-circle" iconColor="#b00020" size={20} style={{ margin: 0 }} />
-                        <Text style={styles.warningText}>
-                            This action is permanent and cannot be undone.
-                        </Text>
-                    </View>
-
-                    <TextInput
-                        label="Student ID"
-                        mode="outlined"
-                        keyboardType="numeric"
-                        style={styles.input}
-                        theme={{ colors: { primary: '#b00020' } }}
-                        left={<TextInput.Icon icon="card-account-details" />}
-                        onChangeText={setId}
-                    />
-
-                    <Button
-                        mode="contained"
-                        style={styles.button}
-                        contentStyle={styles.buttonContent}
-                        icon="delete"
-                        buttonColor="#b00020"
-                        onPress={handleDelete}
-                    >
-                        Delete Student
-                    </Button>
+                <View style={styles.warningBox}>
+                    <IconButton icon="alert-circle" iconColor="#b00020" size={20} style={{ margin: 0 }} />
+                    <Text style={styles.warningText}>
+                        This action is permanent and cannot be undone.
+                    </Text>
                 </View>
-            </View>
 
+                <TextInput
+                    label="Student ID"
+                    mode="outlined"
+                    keyboardType="numeric"
+                    style={styles.input}
+                    theme={{ colors: { primary: '#b00020' } }}
+                    left={<TextInput.Icon icon="card-account-details" />}
+                    onChangeText={setId}
+                />
+
+                <Button
+                    mode="contained"
+                    style={styles.button}
+                    contentStyle={styles.buttonContent}
+                    icon="delete"
+                    buttonColor="#b00020"
+                    onPress={handleDelete}
+                >
+                    Delete Student
+                </Button>
+                <Button
+                    mode="contained"
+                    style={styles.button}
+                    contentStyle={styles.buttonContent}
+                    onPress={() => navigation.navigate('update')}
+                >
+                    Update
+                </Button>
+            </View>
         </View>
     );
 };
